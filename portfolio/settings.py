@@ -134,3 +134,17 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'    
+
+import os
+
+STATIC_URL = '/static/'
+
+# This tells Django where to collect all static files for deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Optional: if you have static assets inside your project
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+ALLOWED_HOSTS = ["*"]  # or your Render URL
