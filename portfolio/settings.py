@@ -148,8 +148,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-ALLOWED_HOSTS = ["*"]  # or your Render URL
-
 import os
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -160,3 +158,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 api_key = os.getenv('API_KEY')
+
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    ...
+]
+
