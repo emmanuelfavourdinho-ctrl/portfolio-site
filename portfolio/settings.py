@@ -149,3 +149,14 @@ STATICFILES_DIRS = [
 ]
 
 ALLOWED_HOSTS = ["*"]  # or your Render URL
+
+import os
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv('API_KEY')
