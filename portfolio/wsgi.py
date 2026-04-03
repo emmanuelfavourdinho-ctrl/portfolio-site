@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# Debug: print the port Render assigned
+port = os.environ.get("PORT", "not set")
+print(f"🚀 Render is assigning PORT = {port}")
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings')
 
 application = get_wsgi_application()
