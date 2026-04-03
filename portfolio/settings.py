@@ -148,3 +148,17 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+# Allow any host (Render will handle routing)
+ALLOWED_HOSTS = ['*']
+
+# Optional: serve static files in production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+
+# Use WhiteNoise for serving static files efficiently
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <--- add here
+    # ... rest of middleware
+]
