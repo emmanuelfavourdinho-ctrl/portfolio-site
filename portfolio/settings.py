@@ -2,14 +2,12 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env file
 load_dotenv()
 
-# BASE DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = os.getenv("SECRET_KEY", "your-default-secret-key")
+SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
@@ -21,12 +19,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'portfolio',  # your app
+    'portfolio',
 ]
 
-# MIDDLEWARE
+# MIDDLEWARE (✅ FIXED)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # add, not replace
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,7 +41,7 @@ ROOT_URLCONF = 'portfolio.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # add your templates folder
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,7 +57,7 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
-# DATABASE (simple SQLite for Render, you can switch to Postgres)
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -66,99 +65,24 @@ DATABASES = {
     }
 }
 
-# PASSWORD VALIDATION
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+# STATIC FILES (✅ CLEAN)
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
 ]
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
+# MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-from django.core.mail import send_mail
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "portfolio/static",
-]
-
+# EMAIL (✅ SECURE)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = 'nsokemmanuelfavour@gmail.com'
-EMAIL_HOST_PASSWORD = 'wwsvhqyriayecwdl'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'    
-
-import os
-
-STATIC_URL = '/static/'
-
-# This tells Django where to collect all static files for deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Optional: if you have static assets inside your project
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-import os
-
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-api_key = os.getenv('API_KEY')
-
-ALLOWED_HOSTS = ['*']
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-]
-
-# Allow any host (Render will handle routing)
-ALLOWED_HOSTS = ['*']
-
-# Optional: serve static files in production
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_URL = '/static/'
-
-# Use WhiteNoise for serving static files efficiently
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # <--- add here
-    # ... rest of middleware
-]
